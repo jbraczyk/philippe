@@ -55,7 +55,13 @@ if (!galerie) return Astro.redirect("/404");
 const estCategorie = (galerie.sousGaleries?.length ?? 0) > 0;
 // Catégorie : fusion (golfs, une page) ou cartes cliquables (chantiers)
 const enCartes = estCategorie && !galerie.fusionSousGaleries;
-const titre = galerie.titrePage || galerie.nom || galerie.titreHomepage;
+// Si le « titre de page » est une longue phrase (> 70 car.), on l'affiche comme
+// sous-titre (plus petit) et on prend le nom de la galerie comme titre (gros).
+const titrePageLong = (galerie.titrePage || "").trim().length > 70;
+const titre = titrePageLong
+  ? (galerie.titreHomepage || galerie.nom || galerie.titrePage)
+  : (galerie.titrePage || galerie.nom || galerie.titreHomepage);
+const sousTitreAffiche = galerie.sousTitre || (titrePageLong ? galerie.titrePage : "");
 const aTexte = !!galerie.texte;
 // Mise en page « colonne de gauche » dès qu'il y a du texte ou une vignette textimage
 const aColonne = !!(galerie.texte || galerie.cover);
@@ -63,7 +69,7 @@ const aColonne = !!(galerie.texte || galerie.cover);
 // SEO : description et image de partage propres à la galerie
 const metaDescription = (
   galerie.intro ||
-  galerie.sousTitre ||
+  sousTitreAffiche ||
   galerie.texte ||
   `${titre} — photographies de Philippe Muraro.`
 )
@@ -558,7 +564,7 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
     {/* Texte à gauche (sous-titre + description), bouton PDF en face à droite */}
     <div class="header-meta">
       <div class="header-texte">
-        {galerie.sousTitre && <p class="sous-titre-page">{galerie.sousTitre}</p>}
+        {sousTitreAffiche && <p class="sous-titre-page">{sousTitreAffiche}</p>}
         {/* La description n'apparaît que sur la page de la galerie elle-même */}
         {galerie.intro && <p class="intro">{galerie.intro}</p>}
       </div>
