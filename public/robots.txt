@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://philippemuraro.com/sitemap.xml
+Sitemap: https://www.philippemuraro.com/sitemap.xml

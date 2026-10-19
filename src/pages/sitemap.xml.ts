@@ -5,7 +5,7 @@ import { sanityClient } from "../lib/sanity";
 export const prerender = false;
 
 export const GET: APIRoute = async ({ site }) => {
-  const base = (site?.href ?? "https://philippemuraro.com/").replace(/\/$/, "");
+  const base = (site?.href ?? "https://www.philippemuraro.com/").replace(/\/$/, "");
 
   // Galeries de premier niveau (pages canoniques navigables)
   const galeries: { slug?: string }[] = await sanityClient.fetch(

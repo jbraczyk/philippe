@@ -6,7 +6,7 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   // Domaine final (pour URLs canoniques, sitemap, Open Graph).
   // À laisser tel quel : il sera correct dès que le domaine sera branché.
-  site: 'https://philippemuraro.com',
+  site: 'https://www.philippemuraro.com',
   // Mode statique par défaut : seules les routes avec `prerender = false`
   // (api/contact, galeries/[slug]) deviennent des fonctions serverless.
   adapter: vercel(),
