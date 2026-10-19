@@ -45,8 +45,8 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     await resend.emails.send({
-      from: 'Contact <onboarding@resend.dev>',
-      to: 'bouratchikj@gmail.com',
+      from: 'Site Philippe Muraro <contact@philippemuraro.com>',
+      to: 'philippemuraro@yahoo.fr',
       replyTo: email,
       subject: `Message de ${nom} — philippemuraro.com`,
       text: `Nom : ${nom}\nEmail : ${email}\n\nMessage :\n${message}`,
