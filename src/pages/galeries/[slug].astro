@@ -21,10 +21,15 @@ const galerie = await sanityClient.fetch(
     "pdfUrl": pdf.asset->url,
     "cover": textimageCover,
     "coverLqip": textimageCover.asset->metadata.lqip,
+    fusionSousGaleries,
+    "parentSlug": parent->slug.current,
+    "parentTitre": parent->titreHomepage,
     "sousGaleries": *[_type == "galerie" && parent._ref == ^._id] | order(ordre asc) {
       titreHomepage,
       nom,
       "slug": slug.current,
+      "cardCover": images[0].image,
+      "cardLqip": images[0].image.asset->metadata.lqip,
       images[] {
         titre,
         image,
@@ -48,6 +53,8 @@ const galerie = await sanityClient.fetch(
 if (!galerie) return Astro.redirect("/404");
 
 const estCategorie = (galerie.sousGaleries?.length ?? 0) > 0;
+// Catégorie : fusion (golfs, une page) ou cartes cliquables (chantiers)
+const enCartes = estCategorie && !galerie.fusionSousGaleries;
 const titre = galerie.titrePage || galerie.nom || galerie.titreHomepage;
 const aTexte = !!galerie.texte;
 // Mise en page « colonne de gauche » dès qu'il y a du texte ou une vignette textimage
@@ -285,6 +292,37 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
       margin-bottom: 0.7rem;
     }
 
+    /* Cartes de sous-galeries (catégorie non fusionnée, ex. chantiers) */
+    .card {
+      display: block;
+      width: 170px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card img {
+      width: 170px;
+      height: 170px;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.3s;
+    }
+    .card:hover img { opacity: 0.8; }
+    .card-titre {
+      display: block;
+      margin-top: 0.4rem;
+      text-align: center;
+      font-family: var(--font-title);
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: var(--color-subtitle);
+      line-height: 1.2;
+    }
+    @media (max-width: 768px) {
+      .card, .card img { width: auto; }
+      .card img { width: 100%; height: auto; aspect-ratio: 1/1; }
+    }
+
     /* ── Lightbox ── */
     .lightbox {
       position: fixed;
@@ -508,7 +546,12 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
     }
   </style>
 
-  <a href="/galeries" class="retour">← Galeries</a>
+  <a
+    href={galerie.parentSlug ? `/galeries/${galerie.parentSlug}` : "/galeries"}
+    class="retour"
+  >
+    ← {galerie.parentTitre || "Galeries"}
+  </a>
 
   <div class="galerie-header">
     <h1>{titre}</h1>
@@ -545,7 +588,28 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
   </div>
 
   {estCategorie ? (
-    /* Catégorie : toutes les photos des sous-galeries, regroupées sous un intertitre */
+    enCartes ? (
+    /* Catégorie en cartes : chaque sous-galerie = une carte cliquable vers sa page */
+    <div class="grid">
+      {galerie.sousGaleries.map((sg: any) => (
+        <a href={`/galeries/${sg.slug}`} class="card">
+          {sg.cardCover && (
+            <img
+              src={imgSrc(sg.cardCover, 340, { square: true })}
+              srcset={imgSrcSet(sg.cardCover, CARD_WIDTHS, { square: true })}
+              sizes={CARD_SIZES}
+              alt={sg.nom || sg.titreHomepage}
+              loading="lazy"
+              decoding="async"
+              style={sg.cardLqip ? `background-image:url(${sg.cardLqip});background-size:cover;background-position:center` : undefined}
+            />
+          )}
+          <span class="card-titre">{sg.nom || sg.titreHomepage}</span>
+        </a>
+      ))}
+    </div>
+    ) : (
+    /* Catégorie fusionnée : toutes les photos des sous-galeries sous un intertitre */
     <div class="sections">
       {galerie.sousGaleries.map((sg: any) => (
         <section class="sous-galerie">
@@ -579,6 +643,7 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
         </section>
       ))}
     </div>
+    )
   ) : aColonne ? (
     <div class="layout-texte">
       <aside class="texte-gauche">
