@@ -292,7 +292,9 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
     @media (max-width: 768px) {
       /* Une tuile centrée à ~82% de la largeur : plus grande qu'avant,
          mais pas pleine largeur, avec une marge modérée. */
-      .grid { grid-template-columns: min(82vw, 360px); justify-content: center; gap: 0.8rem; }
+      /* Pleine largeur utile : mêmes gouttières que le titre et la couverture
+         (le centrage en 82vw créait un décalage asymétrique vers la droite). */
+      .grid { grid-template-columns: minmax(0, 1fr); justify-content: stretch; gap: 0.8rem; }
       .grid figure { width: auto; }
       .photo { width: 100%; height: auto; aspect-ratio: 1/1; }
       figcaption { width: auto; }
