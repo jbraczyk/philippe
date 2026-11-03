@@ -174,15 +174,20 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
       font-size: 0.95rem;
       line-height: 1;
     }
-    /* Bloc bouton textimage après la galerie */
-    .textimage-apres {
-      display: flex;
-      justify-content: center;
-      margin: 3rem 0 0.5rem;
-    }
-    .textimage-apres .pdf-btn {
-      margin-right: 0;
-      margin-left: 0;
+    /* Bloc bouton textimage après la galerie : visible UNIQUEMENT en mobile.
+       Sur ordinateur, le bouton reste à sa place (en-tête / colonne de gauche). */
+    .textimage-apres { display: none; }
+    @media (max-width: 800px) {
+      .pdf-btn-desktop { display: none !important; }
+      .textimage-apres {
+        display: flex;
+        justify-content: center;
+        margin: 2.5rem 0 0.5rem;
+      }
+      .textimage-apres .pdf-btn {
+        margin-right: 0;
+        margin-left: 0;
+      }
     }
 
     /* Variante placée sous le texte de la colonne de gauche.
@@ -595,6 +600,9 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
               />
             </a>
           )}
+          <a href={galerie.pdfUrl} target="_blank" rel="noopener" class="pdf-btn pdf-btn-desktop" id="pdf-open">
+            <span class="pdf-icon">↓</span> Ouvrir le textimage
+          </a>
         </div>
       )}
     </div>
@@ -674,6 +682,11 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
             />
           </a>
         )}
+        {galerie.pdfUrl && (
+          <a href={galerie.pdfUrl} target="_blank" rel="noopener" class="pdf-btn pdf-btn-colonne pdf-btn-desktop" id="pdf-open">
+            <span class="pdf-icon">↓</span> Ouvrir le textimage
+          </a>
+        )}
       </aside>
       <div class="grid">
         {galerie.images?.map((item: any) => (
@@ -732,7 +745,7 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
   {/* Bouton textimage placé APRÈS la galerie (galeries simples avec PDF) */}
   {galerie.pdfUrl && !estCategorie && (
     <div class="textimage-apres">
-      <a href={galerie.pdfUrl} target="_blank" rel="noopener" class="pdf-btn" id="pdf-open">
+      <a href={galerie.pdfUrl} target="_blank" rel="noopener" class="pdf-btn">
         <span class="pdf-icon">↓</span> Ouvrir le textimage
       </a>
     </div>
