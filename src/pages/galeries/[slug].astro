@@ -28,8 +28,8 @@ const galerie = await sanityClient.fetch(
       titreHomepage,
       nom,
       "slug": slug.current,
-      "cardCover": images[0].image,
-      "cardLqip": images[0].image.asset->metadata.lqip,
+      "cardCover": coalesce(textimageCover, images[0].image),
+      "cardLqip": coalesce(textimageCover.asset->metadata.lqip, images[0].image.asset->metadata.lqip),
       images[] {
         titre,
         image,
