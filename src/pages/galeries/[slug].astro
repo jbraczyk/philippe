@@ -174,6 +174,16 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
       font-size: 0.95rem;
       line-height: 1;
     }
+    /* Bloc bouton textimage après la galerie */
+    .textimage-apres {
+      display: flex;
+      justify-content: center;
+      margin: 3rem 0 0.5rem;
+    }
+    .textimage-apres .pdf-btn {
+      margin-right: 0;
+      margin-left: 0;
+    }
 
     /* Variante placée sous le texte de la colonne de gauche.
        On réaffirme le style : sinon le bouton hérite de la serif du parent. */
@@ -585,9 +595,6 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
               />
             </a>
           )}
-          <a href={galerie.pdfUrl} target="_blank" rel="noopener" class="pdf-btn" id="pdf-open">
-            <span class="pdf-icon">↓</span> Ouvrir le textimage
-          </a>
         </div>
       )}
     </div>
@@ -667,11 +674,6 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
             />
           </a>
         )}
-        {galerie.pdfUrl && (
-          <a href={galerie.pdfUrl} target="_blank" rel="noopener" class="pdf-btn pdf-btn-colonne" id="pdf-open">
-            <span class="pdf-icon">↓</span> Ouvrir le textimage
-          </a>
-        )}
       </aside>
       <div class="grid">
         {galerie.images?.map((item: any) => (
@@ -724,6 +726,15 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
           {item.titre && <figcaption>{item.titre}</figcaption>}
         </figure>
       ))}
+    </div>
+  )}
+
+  {/* Bouton textimage placé APRÈS la galerie (galeries simples avec PDF) */}
+  {galerie.pdfUrl && !estCategorie && (
+    <div class="textimage-apres">
+      <a href={galerie.pdfUrl} target="_blank" rel="noopener" class="pdf-btn" id="pdf-open">
+        <span class="pdf-icon">↓</span> Ouvrir le textimage
+      </a>
     </div>
   )}
 
