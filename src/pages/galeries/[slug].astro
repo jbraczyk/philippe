@@ -100,7 +100,7 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
 
     h1 {
       font-family: var(--font-title);
-      font-size: var(--size-title);
+      font-size: calc(var(--size-title) - 4px);
       font-weight: 300;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -155,12 +155,12 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
       margin-left: auto;
       /* Léger retrait pour ne pas dépasser du bord droit des vignettes */
       margin-right: 2.5rem;
-      padding: 0.65rem 1.4rem;
+      padding: 0.65rem 1.05rem;
       border: 1px solid #3a3a3a;
       color: #aaa;
       background: transparent;
       text-decoration: none;
-      font-size: 0.76rem;
+      font-size: 0.7rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       transition: color 0.2s, border-color 0.2s, background 0.2s;
@@ -205,7 +205,7 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
       margin: 2rem 0 0;
       display: inline-flex;
       font-family: var(--font-body);
-      font-size: 0.76rem;
+      font-size: 0.7rem;
       font-weight: 400;
       line-height: 1;
       letter-spacing: 0.14em;
@@ -586,7 +586,7 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
             </a>
           )}
           <a href={galerie.pdfUrl} target="_blank" rel="noopener" class="pdf-btn" id="pdf-open">
-            <span class="pdf-icon">↓</span> Ouvrir le textimage (PDF)
+            <span class="pdf-icon">↓</span> Ouvrir le textimage
           </a>
         </div>
       )}
@@ -669,7 +669,7 @@ const ogImage = premiereImage ? imgSrc(premiereImage, 1200) : undefined;
         )}
         {galerie.pdfUrl && (
           <a href={galerie.pdfUrl} target="_blank" rel="noopener" class="pdf-btn pdf-btn-colonne" id="pdf-open">
-            <span class="pdf-icon">↓</span> Ouvrir le textimage (PDF)
+            <span class="pdf-icon">↓</span> Ouvrir le textimage
           </a>
         )}
       </aside>
